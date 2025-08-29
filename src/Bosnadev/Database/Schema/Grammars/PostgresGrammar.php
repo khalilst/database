@@ -43,10 +43,12 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
      */
     public function __call($method, $parameters)
     {
+        $method = strtolower($method);
+
         if(substr($method, 0, 4) === 'type') {
             $type = substr($method, 4, strlen($method) - 4);
 
-            return lcfirst($type);
+            return $type;
         }
     }
 
@@ -140,7 +142,7 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
 
         return sprintf('CREATE INDEX %s ON %s USING GIN(%s)', $command->index, $this->wrapTable($blueprint), $columns);
     }
-    
+
     /**
      * Compile a gist index key command.
      *
